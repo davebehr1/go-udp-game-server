@@ -1,22 +1,39 @@
-package main
+package gameObjects
 
 import (
 	"fmt"
 	"image"
+	_ "image/png"
 	"net"
 	"os"
 
-	_ "image/png"
-
-	"golang.org/x/image/colornames"
-
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
+	"golang.org/x/image/colornames"
+)
+
+type PaddleSide int
+
+const (
+	NONE PaddleSide = iota
+	LEFT
+	RIGHT
 )
 
 const serverAddress = "localhost:1337"
 
-func run() {
+type Client struct {
+}
+
+func (c Client) Run() {
+
+	fmt.Println("running client")
+
+	paddle := Paddle{NONE}
+
+	paddle.LoadContent()
+
+	fmt.Print(paddle)
 
 	cfg := pixelgl.WindowConfig{
 		Title:  "Game Networking",
@@ -29,7 +46,7 @@ func run() {
 		panic(err)
 	}
 
-	pic, err := loadPicture("gopher.png")
+	pic, err := LoadPicture("gopher.png")
 	if err != nil {
 		panic(err)
 	}
@@ -75,7 +92,7 @@ func run() {
 	}
 }
 
-func loadPicture(path string) (pixel.Picture, error) {
+func LoadPicture(path string) (pixel.Picture, error) {
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, err
@@ -86,8 +103,4 @@ func loadPicture(path string) (pixel.Picture, error) {
 		return nil, err
 	}
 	return pixel.PictureDataFromImage(img), nil
-}
-func main() {
-	fmt.Println("Running Client")
-	pixelgl.Run(run)
 }
