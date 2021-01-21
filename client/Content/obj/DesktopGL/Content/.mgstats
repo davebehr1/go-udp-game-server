@@ -1,0 +1,9 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"/Users/mac/Projects/pong2/pong2/Content/../../../../Desktop/Content/ball.png","/Users/mac/Projects/pong2/pong2/Content/bin/DesktopGL/Content/ball.xnb","TextureProcessor","Texture2DContent",154,341,0.202836
+"/Users/mac/Projects/pong2/pong2/Content/ball-hit.wav","/Users/mac/Projects/pong2/pong2/Content/bin/DesktopGL/Content/ball-hit.xnb","SoundEffectProcessor","SoundEffectContent",26970,27031,0.081434
+"/Users/mac/Projects/pong2/pong2/Content/ball.png","/Users/mac/Projects/pong2/pong2/Content/bin/DesktopGL/Content/ball.xnb","TextureProcessor","Texture2DContent",154,341,0.001251
+"/Users/mac/Projects/pong2/pong2/Content/establishing-connection-msg.png","/Users/mac/Projects/pong2/pong2/Content/bin/DesktopGL/Content/establishing-connection-msg.xnb","TextureProcessor","Texture2DContent",459,8509,0.001259
+"/Users/mac/Projects/pong2/pong2/Content/game-over-msg.png","/Users/mac/Projects/pong2/pong2/Content/bin/DesktopGL/Content/game-over-msg.xnb","TextureProcessor","Texture2DContent",649,17557,0.001337
+"/Users/mac/Projects/pong2/pong2/Content/paddle.png","/Users/mac/Projects/pong2/pong2/Content/bin/DesktopGL/Content/paddle.xnb","TextureProcessor","Texture2DContent",161,1493,0.000995
+"/Users/mac/Projects/pong2/pong2/Content/score.wav","/Users/mac/Projects/pong2/pong2/Content/bin/DesktopGL/Content/score.xnb","SoundEffectProcessor","SoundEffectContent",72934,72995,0.055272
+"/Users/mac/Projects/pong2/pong2/Content/waiting-for-game-start-msg.png","/Users/mac/Projects/pong2/pong2/Content/bin/DesktopGL/Content/waiting-for-game-start-msg.xnb","TextureProcessor","Texture2DContent",480,8405,0.001223
