@@ -6,6 +6,7 @@ import (
 	_ "image/png"
 	"net"
 	"os"
+	"time"
 
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
@@ -22,6 +23,8 @@ const (
 
 const serverAddress = "localhost:1337"
 
+var cfg pixelgl.WindowConfig
+
 type Client struct {
 }
 
@@ -29,13 +32,7 @@ func (c Client) Run() {
 
 	fmt.Println("running client")
 
-	paddle := Paddle{NONE}
-
-	paddle.LoadContent()
-
-	fmt.Print(paddle)
-
-	cfg := pixelgl.WindowConfig{
+	cfg = pixelgl.WindowConfig{
 		Title:  "Game Networking",
 		Bounds: pixel.R(0, 0, 1024, 768),
 		VSync:  true,
@@ -46,20 +43,13 @@ func (c Client) Run() {
 		panic(err)
 	}
 
-	pic, err := LoadPicture("gopher.png")
-	if err != nil {
-		panic(err)
-	}
+	win.Clear(colornames.Black)
 
-	sprite := pixel.NewSprite(pic, pic.Bounds())
+	leftPaddle := newPaddle(LEFT, cfg)
 
-	win.Clear(colornames.Wheat)
+	rightPaddle := newPaddle(RIGHT, cfg)
 
-	mat := pixel.IM
-	mat = mat.Moved(win.Bounds().Center())
-	mat = mat.ScaledXY(win.Bounds().Center(), pixel.V(0.15, 0.15))
-	sprite.Draw(win, mat)
-	fmt.Println("running")
+	ball := newBall(cfg)
 
 	ServerAddr, err := net.ResolveUDPAddr("udp", serverAddress)
 	if err != nil {
@@ -78,11 +68,37 @@ func (c Client) Run() {
 
 	defer Conn.Close()
 
+	last := time.Now()
 	for !win.Closed() {
 
+		dt := time.Since(last).Seconds()
+
+		ctrl := pixel.ZV
+		if win.Pressed(pixelgl.KeyUp) {
+			ctrl.Y = 1
+		}
+		if win.Pressed(pixelgl.KeyDown) {
+			ctrl.Y = -1
+		}
+
+		win.Clear(colornames.Black)
+
+		leftPaddle.update(dt, ctrl)
+		rightPaddle.update(dt, ctrl)
+
+		leftPaddle.Draw(win)
+		rightPaddle.Draw(win)
+
+		ball.update(rightPaddle, leftPaddle, cfg)
+		ball.Draw(win)
+
 		if win.Pressed(pixelgl.KeyLeft) {
-			buf := []byte("pressed left")
-			_, err := Conn.Write(buf)
+			packet := Packet{
+				"pressed left",
+				time.Now(),
+				PaddlePosition,
+			}
+			_, err = Conn.Write(packet.getBytes())
 			if err != nil {
 				fmt.Println(err)
 			}

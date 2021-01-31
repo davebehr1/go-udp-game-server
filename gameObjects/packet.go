@@ -1,6 +1,10 @@
-package main
+package gameObjects
 
-import "time"
+import (
+	"bytes"
+	"encoding/gob"
+	"time"
+)
 
 type PacketType uint8
 
@@ -18,13 +22,23 @@ const (
 )
 
 type Packet struct {
-	Payload   []byte
+	Payload   string
 	timestamp time.Time
 	ptype     PacketType
 }
 
-func (packet Packet) GetBytes() []byte {
-	return packet.Payload
+func (packet Packet) getBytes() []byte {
+
+	var buffer bytes.Buffer
+	encoder := gob.NewEncoder(&buffer)
+
+	err := encoder.Encode(packet)
+
+	if err != nil {
+		panic(err)
+
+	}
+	return buffer.Bytes()
 }
 
 type RequestJoinPacket struct {
@@ -33,8 +47,4 @@ type RequestJoinPacket struct {
 
 type AcceptJoinPacket struct {
 	Packet
-}
-
-func main() {
-	c1 := Packet{make([]byte, 0), time.Now(), RequestJoin}
 }
